@@ -1,5 +1,5 @@
 import './App.css';
-import { getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut, TwitterAuthProvider } from 'firebase/auth'
+import { FacebookAuthProvider, getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut, TwitterAuthProvider } from 'firebase/auth'
 import app from './firebase/firebase.init';
 import { useState } from 'react';
 
@@ -9,7 +9,8 @@ function App() {
   const [user, setUser] = useState({})
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
-  const twitterProvider = new TwitterAuthProvider()
+  const twitterProvider = new TwitterAuthProvider();
+  const faceBookProvider = new FacebookAuthProvider();
 
   const handleGoogleSignIn = () => {
     signInWithPopup(auth, googleProvider)
@@ -22,14 +23,29 @@ function App() {
 
   const handleGithubSignIn = () => {
     signInWithPopup(auth, githubProvider)
-      .then(result => setUser(result.user))
+      .then(result => {
+        setUser(result.user);
+        console.log(result.user);
+      })
       .catch(err => console.error('error: ', err))
   }
 
   const handleTwitterSignIn = () => {
     signInWithPopup(auth, twitterProvider)
-      .then(result => setUser(result.user))
-      .catch(err => console.error('error: ', err))
+      .then(result => {
+        setUser(result.user);
+        console.log(result.user);
+      })
+      .catch(err => console.log('error: ', err))
+  }
+
+  const handleFaceBookSignIn = () => {
+    signInWithPopup(auth, faceBookProvider)
+      .then(result => {
+        setUser(result.user)
+        console.log(result.user);
+      })
+      .catch(err => console.log("error: ", err))
   }
 
   const handleSignOut = () => {
@@ -49,6 +65,7 @@ function App() {
             <button onClick={handleGoogleSignIn}>Google Sign In</button>
             <button onClick={handleGithubSignIn}>Github Sign In</button>
             <button onClick={handleTwitterSignIn}>Twitter Sign In</button>
+            <button onClick={handleFaceBookSignIn}>Facebook Sign In</button>
           </>
       }
       {user.displayName && <div>
